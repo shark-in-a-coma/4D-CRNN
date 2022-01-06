@@ -30,8 +30,12 @@ def read_file(file):
 
 
 def compute_DE(signal):
-    variance = np.var(signal, ddof=1)
-    return math.log(2 * math.pi * math.e * variance) / 2
+    # do PSD not DE
+    if True:
+        return np.sum(signal**2)
+    else:
+        variance = np.var(signal, ddof=1)
+        return math.log(2 * math.pi * math.e * variance) / 2
 
 
 def decompose(file):
@@ -154,6 +158,6 @@ if __name__ == '__main__':
         file_path = os.path.join(dataset_dir, file)
         base_DE, trial_DE = decompose(file_path)
         arousal_labels, valence_labels = get_labels(file_path)
-        sio.savemat(result_dir + "DE_" + file,
+        sio.savemat(result_dir + "PSD_" + file,
                     {"base_data": base_DE, "data": trial_DE, "valence_labels": valence_labels,
                      "arousal_labels": arousal_labels})
